@@ -1,0 +1,25 @@
+name: build docker
+
+on:
+  push:
+    branches:
+      - main  # Set a branch that will trigger a deployment
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        name: Check out code
+
+      - uses: mr-smithers-excellent/docker-build-push@v5.8
+        name: Build & push Docker image V1
+        with:
+          image: mohamadmokhtar/library
+          tags: post-http-server-v1
+          registry: docker.io
+          dockerfile: Dockerfile
+          directory: V1
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
